@@ -1,0 +1,35 @@
+{
+  "name": "codingforconvos",
+  "version": "0.0.27",
+  "description": "NPM package for simplifying coding for conversations. The initial goal of this project is to make life easier for Cisco customers leveraging Google Dialogflow ES to create natural language bots.",
+  "main": "src/codingforconvos.js",
+  "engines": {
+    "node": ">=8"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jusranda/codingforconvos.git"
+  },
+  "keywords": [
+    "conversational-ai",
+    "cai",
+    "ccai",
+    "dialogflow"
+  ],
+  "author": "Justin Randall",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/jusranda/codingforconvos/issues"
+  },
+  "homepage": "https://github.com/jusranda/codingforconvos#readme",
+  "dependencies": {
+    "codingforconvos": "^0.0.8",
+    "dialogflow-fulfillment": "^0.6.1"
+  }
+}
