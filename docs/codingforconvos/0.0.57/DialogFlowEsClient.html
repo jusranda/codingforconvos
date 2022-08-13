@@ -97,7 +97,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="clients_dialogflow-es.js.html">clients/dialogflow-es.js</a>, <a href="clients_dialogflow-es.js.html#line27">line 27</a>
+        <a href="clients_dialogflow-es.js.html">clients/dialogflow-es.js</a>, <a href="clients_dialogflow-es.js.html#line76">line 76</a>
     </li></ul></dd>
     
 
@@ -206,7 +206,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="clients_dialogflow-es.js.html">clients/dialogflow-es.js</a>, <a href="clients_dialogflow-es.js.html#line61">line 61</a>
+        <a href="clients_dialogflow-es.js.html">clients/dialogflow-es.js</a>, <a href="clients_dialogflow-es.js.html#line126">line 126</a>
     </li></ul></dd>
     
 
@@ -278,7 +278,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="clients_dialogflow-es.js.html">clients/dialogflow-es.js</a>, <a href="clients_dialogflow-es.js.html#line69">line 69</a>
+        <a href="clients_dialogflow-es.js.html">clients/dialogflow-es.js</a>, <a href="clients_dialogflow-es.js.html#line134">line 134</a>
     </li></ul></dd>
     
 
@@ -350,7 +350,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="clients_dialogflow-es.js.html">clients/dialogflow-es.js</a>, <a href="clients_dialogflow-es.js.html#line53">line 53</a>
+        <a href="clients_dialogflow-es.js.html">clients/dialogflow-es.js</a>, <a href="clients_dialogflow-es.js.html#line118">line 118</a>
     </li></ul></dd>
     
 
@@ -422,7 +422,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="clients_dialogflow-es.js.html">clients/dialogflow-es.js</a>, <a href="clients_dialogflow-es.js.html#line45">line 45</a>
+        <a href="clients_dialogflow-es.js.html">clients/dialogflow-es.js</a>, <a href="clients_dialogflow-es.js.html#line110">line 110</a>
     </li></ul></dd>
     
 
@@ -443,6 +443,172 @@
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="handleIntentAndNavigate"><span class="type-signature">(async) </span>handleIntentAndNavigate<span class="signature">(dialogContext, intentAction)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Run the intent handlers, fetch the updated (or not) sequence, and navigate to the next turn.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>dialogContext</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="DialogContext.html">DialogContext</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The dialog context.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>intentAction</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The intent action.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="clients_dialogflow-es.js.html">clients/dialogflow-es.js</a>, <a href="clients_dialogflow-es.js.html#line160">line 160</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+    
+
+
+
+
 
         
             
@@ -574,7 +740,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="clients_dialogflow-es.js.html">clients/dialogflow-es.js</a>, <a href="clients_dialogflow-es.js.html#line182">line 182</a>
+        <a href="clients_dialogflow-es.js.html">clients/dialogflow-es.js</a>, <a href="clients_dialogflow-es.js.html#line277">line 277</a>
     </li></ul></dd>
     
 
@@ -620,6 +786,149 @@
 
 
         
+            
+
+    
+
+    
+    <h4 class="name" id="intentHandler"><span class="type-signature">(async) </span>intentHandler<span class="signature">(agent)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    The main entry point from the dialogflow-fulfillment-nodejs API.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>agent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WebhookClient</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The dialogflow-fulfillment-nodejs API endpoint.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="clients_dialogflow-es.js.html">clients/dialogflow-es.js</a>, <a href="clients_dialogflow-es.js.html#line195">line 195</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+    
+
+
+
+
+
+        
     
 
     
@@ -635,13 +944,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ContextManager.html">ContextManager</a></li><li><a href="ConvoClient.html">ConvoClient</a></li><li><a href="DialogFlowEsClient.html">DialogFlowEsClient</a></li><li><a href="Intent.html">Intent</a></li><li><a href="IntentManager.html">IntentManager</a></li><li><a href="Sequence.html">Sequence</a></li><li><a href="SequenceManager.html">SequenceManager</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_cleanUpDfOutputContext">_cleanUpDfOutputContext</a></li><li><a href="global.html#_cleanUpSessionPath">_cleanUpSessionPath</a></li><li><a href="global.html#_sessionPathRegex">_sessionPathRegex</a></li><li><a href="global.html#cleanUpDfFulfillmentRequest">cleanUpDfFulfillmentRequest</a></li><li><a href="global.html#DEF_CTX_LIFESPAN">DEF_CTX_LIFESPAN</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ContextManager.html">ContextManager</a></li><li><a href="ConvoClient.html">ConvoClient</a></li><li><a href="DialogContext.html">DialogContext</a></li><li><a href="DialogFlowEsClient.html">DialogFlowEsClient</a></li><li><a href="Intent.html">Intent</a></li><li><a href="IntentManager.html">IntentManager</a></li><li><a href="Sequence.html">Sequence</a></li><li><a href="SequenceManager.html">SequenceManager</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_cleanUpOutputContext">_cleanUpOutputContext</a></li><li><a href="global.html#_cleanUpSessionPath">_cleanUpSessionPath</a></li><li><a href="global.html#cleanUpRequest">cleanUpRequest</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Wed Aug 03 2022 10:17:57 GMT-0400 (Eastern Daylight Saving Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Fri Aug 12 2022 23:32:05 GMT-0400 (Eastern Daylight Saving Time)
 </footer>
 
 <script> prettyPrint(); </script>

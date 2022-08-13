@@ -19,7 +19,7 @@
 class Sequence {
  
     /**
-     * Constructor for DialogFlowEsClient objects.
+     * Constructor for Sequence objects.
      * 
      * @example
      * const { Sequence } = require(codingforconvos);
@@ -34,7 +34,7 @@ class Sequence {
         if (params.name == undefined) { throw new Error('name is a required parameter for creating Sequence objects.'); }
         if (params.activity == undefined) { throw new Error('activity is a required parameter for creating Sequence objects.'); }
         if (params.authRequired == undefined) { throw new Error('authRequired is a required parameter for creating Sequence objects.'); }
-        if (params.createCtx == undefined) { throw new Error('createCtx is a required parameter for creating Sequence objects.'); }
+        if (params.params == undefined) { throw new Error('params is a required parameter for creating Sequence objects.'); }
         if (params.createCase == undefined) { throw new Error('createCase is a required parameter for creating Sequence objects.'); }
         if (params.navigate == undefined) { throw new Error('navigate is a required parameter for creating Sequence objects.'); }
         if (params.breakIntents == undefined) { throw new Error('breakIntents is a required parameter for creating Sequence objects.'); }
@@ -64,12 +64,12 @@ class Sequence {
         this._authRequired = params.authRequired;
  
         /**
-         * The function pointer for creating the sequence-specific context.
+         * The context parameters for this sequence.
          * 
          * @private
-         * @type {Function}
+         * @type {Object}
          */
-        this.createCtx = params.createCtx;
+        this._params = params.params;
  
         /**
          * The function pointer for creating a case if the sequence fails.
@@ -136,6 +136,19 @@ class Sequence {
      * @param {string} value The value.
      */
     set authRequired(value) { this._authRequired = value; }
+
+    /**
+     * Gets the params.
+     * 
+     * @return The params.
+     */
+    get params() { return this._params; }
+    /**
+     * Sets the params.
+     * 
+     * @param {string} value The value.
+     */
+    set params(value) { this._params = value; }
 
     /**
      * Gets the breakIntents.
