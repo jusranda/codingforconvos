@@ -14,7 +14,9 @@
  */
 
 const { Sequence, SequenceManager } = require("./sequences");
+const { ConnectorManager } = require("./connectors");
 const { DialogFlowEsClient } = require("./clients/dialogflow-es");
+const { fmtLog } = require("./common");
 const { WebhookClient } = require("dialogflow-fulfillment");
 
 const DEF_CTX_LIFESPAN = 99;
@@ -52,6 +54,7 @@ class DialogContext {
         if (params.sessionParams == undefined) { throw new Error('sessionParams is a required parameter for creating DialogContext objects.'); }
         if (params.currentSequence == undefined) { throw new Error('currentSequence is a required parameter for creating DialogContext objects.'); }
         if (params.currentContext == undefined) { throw new Error('currentContext is a required parameter for creating DialogContext objects.'); }
+        if (params.connectorManager == undefined) { throw new Error('connectorManager is a required parameter for creating DialogContext objects.'); }
 
         /**
          * The session ID.
@@ -108,6 +111,14 @@ class DialogContext {
          * @type {Object}
          */
         this._currentContext = params.currentContext;
+
+        /**
+         * The connector manager.
+         * 
+         * @private
+         * @type {ConnectorManager}
+         */
+        this._connectorManager = params.connectorManager;
 
         this.setFulfillmentText = this.setFulfillmentText.bind(this);
         this.appendFulfillmentText = this.appendFulfillmentText.bind(this);
@@ -172,9 +183,22 @@ class DialogContext {
     /**
      * Sets the contextManager.
      * 
-     * @param {string} value The value.
+     * @param {Object} value The value.
      */
     set contextManager(value) { this._contextManager = value; }
+
+    /**
+     * Gets the connectorManager.
+     * 
+     * @return The connectorManager.
+     */
+    get connectorManager() { return this._connectorManager; }
+    /**
+     * Sets the connectorManager.
+     * 
+     * @param {Object} value The value.
+     */
+    set connectorManager(value) { this._connectorManager = value; }
 
     /**
      * Gets the sessionParams.
@@ -237,7 +261,7 @@ class DialogContext {
     /**
      * Sets the currentSequence.
      * 
-     * @param {string} value The value.
+     * @param {Sequence} value The value.
      */
     set currentSequence(value) { this._currentSequence = value; }
 
@@ -311,10 +335,9 @@ class DialogContext {
      * @param {string} fulfillmentText  The fulfillment response text, or lastFulfillmentText is not provided.
      */
     respondWithText(fulfillmentText = '|') {
-        if (fulfillmentText === '|') {
-            this._dialogflowAgent.add(this._sessionParams.parameters.lastFulfillmentText);
-        }
-        this._dialogflowAgent.add(fulfillmentText);
+        this._dialogflowAgent.add(
+            ((fulfillmentText !== '|') ? fulfillmentText : this._sessionParams.parameters.lastFulfillmentText)
+        );
     }
 
     /**
@@ -551,7 +574,7 @@ class DialogContext {
         let sequenceStack = this._sessionParams.parameters.sequenceStack.split('|');
     
         if (sequenceStack[sequenceStack.length-1] !== name) { // Integrity check that we're removing the sequence we think we are.
-            console.error('Error: Expecting to pop '+name+' off of Stack: '+this._sessionParams.parameters.sequenceStack);
+            console.error(fmtLog('popSequence', 'Error: Expecting to pop '+name+' off of Stack: '+this._sessionParams.parameters.sequenceStack, this));
         }
     
         let newSequenceStack = sequenceStack.slice(0, sequenceStack.length-1);
@@ -567,7 +590,8 @@ class DialogContext {
 
     popSequenceAndNavigate(name) {
         this.popSequence (name);
-        let sequenceUpdated = this._sequenceManager.get(this._sessionParams.parameters.sequenceCurrent);
+        let sequenceUpdated = this._contextManager.sequenceManager.get(this._sessionParams.parameters.sequenceCurrent);
+        console.log(fmtLog('popSequenceAndNavigate', 'Calling '+sequenceUpdated.name+'.navigate()', this));
         sequenceUpdated.navigate(this);
         return;
     }

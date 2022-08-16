@@ -13,11 +13,11 @@
  * see <https://www.gnu.org/licenses/>.
  */
 
-const {DialogFlowEsClient} = require('./clients/dialogflow-es');
-const {Sequence,SequenceManager} = require('./sequences');
-const {Intent,IntentManager} = require('./intents');
-const {Connector,ConnectorManager} = require('./connectors');
-const {ContextManager} = require('./contexts');
-const {fmtLog} = require('./common');
+function fmtLog(logPrefix, logMessage, dialogContext) {
+    if (dialogContext !== undefined) {
+        return dialogContext.sessionId+'|'+logPrefix+': '+logMessage;
+    }
+    return 'sessionId-unset|'+logPrefix+': '+logMessage;
+}
 
-module.exports = {DialogFlowEsClient,Sequence,SequenceManager,Intent,IntentManager,ContextManager,Connector,ConnectorManager,fmtLog};
+module.exports = {fmtLog};

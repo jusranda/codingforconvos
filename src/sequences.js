@@ -45,7 +45,7 @@ class Sequence {
          * @private
          * @type {string}
          */
-        this._name = params.name !== undefined ? params.name : undefined;
+        this._name = ((params.name !== undefined) ? params.name : 'name-broken');
  
         /**
          * The gerund description of the sequence goal.
@@ -85,7 +85,7 @@ class Sequence {
          * @private
          * @type {Function}
          */
-        this.navigate = params.navigate;
+        this.navigate = params.navigate.bind(this);
  
         /**
          * The map of intents to trigger a skip of the navigation step.  The result 
@@ -96,6 +96,8 @@ class Sequence {
          */
         this._breakIntents = new Map();
         params.breakIntents.forEach(breakIntent => this._breakIntents.set(breakIntent.action, breakIntent.trigger));
+
+        this.navigate = this.navigate.bind(this);
     }
 
     /**
@@ -172,7 +174,7 @@ class Sequence {
  */
 class SequenceManager {
     /**
-     * Constructor for DialogFlowEsClient objects.
+     * Constructor for SequenceManager objects.
      * 
      * @example
      * const { SequenceManager } = require(codingforconvos);
@@ -188,6 +190,12 @@ class SequenceManager {
         this._sequences = new Map();
     }
 
+    /**
+     * Retrieve a sequence by registered name.
+     * 
+     * @param {string} name 
+     * @returns the registered sequence.
+     */
     get(name) {
         return this._sequences.get(name);
     }

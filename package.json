@@ -1,6 +1,6 @@
 {
   "name": "codingforconvos",
-  "version": "0.0.57",
+  "version": "0.0.82",
   "description": "NPM package for simplifying coding for conversations. The initial goal of this project is to make life easier for Cisco customers leveraging Google Dialogflow ES to create natural language bots.",
   "main": "src/codingforconvos.js",
   "engines": {
