@@ -350,8 +350,11 @@ class DialogContext {
      * @param {string} fulfillmentText  The optional fulfillment text.  It will only be logged, but not uttered due to the event.
      * @returns the follow-up event.
      */
-    respondWithEvent(eventName, fulfillmentText = '.') {
-        this._dialogflowAgent.add(fulfillmentText); // Add dummy reply due to dialogflow-fulfillment-nodejs API behaviour.
+    respondWithEvent(eventName, fulfillmentText = '|') {
+        // Add dummy reply due to dialogflow-fulfillment-nodejs API behaviour.
+        this._dialogflowAgent.add(
+            ((fulfillmentText !== '|') ? fulfillmentText : this._sessionParams.parameters.lastFulfillmentText)
+        ); 
         this.setParam(this._sessionParams, 'lastEvent', eventName);
         let event = this._dialogflowAgent.setFollowupEvent(eventName);
         return event;

@@ -21,6 +21,8 @@ const { DialogContext, ContextManager } = require('../contexts');
 const { fmtLog } = require('../common');
 const { ConnectorManager } = require('../connectors');
 
+// Define Global Context Constants.
+const SESSION_PROPS = 'sessionprops';
 const _sessionPathRegex = /\/locations\/[^/]+/;
 
 /**
@@ -93,7 +95,9 @@ class DialogFlowEsClient extends ConvoClient {
         if (params.intentManager == undefined) { throw new Error('intentManager is a required parameter for creating DialogFlowEsClient objects.'); }
         if (params.contextManager == undefined) { throw new Error('contextManager is a required parameter for creating DialogFlowEsClient objects.'); }
         if (params.connectorManager == undefined) { throw new Error('connectorManager is a required parameter for creating DialogFlowEsClient objects.'); }
-        if (params.getSessionPropsContext == undefined) { throw new Error('getSessionPropsContext is a required parameter for creating DialogFlowEsClient objects.'); }
+        if (params.populateFromEsPayload == undefined) { throw new Error('populateFromEsPayload is a required parameter for creating DialogFlowEsClient objects.'); }
+        if (params.populateFromLookup == undefined) { throw new Error('populateFromLookup is a required parameter for creating DialogFlowEsClient objects.'); }
+        if (params.baseParams == undefined) { throw new Error('baseParams is a required parameter for creating DialogFlowEsClient objects.'); }
 
         /**
          * The sequence manager.
@@ -128,18 +132,37 @@ class DialogFlowEsClient extends ConvoClient {
         this._connectorManager = params.connectorManager;
 
         /**
-         * The function to initialize the sesion props context.
+         * The function to populate the session props context using the Dialogflow ES payload.
          * 
          * @private
          * @type {Function}
          */
-        this._getSessionPropsContext = params.getSessionPropsContext;
+         this._populateFromEsPayload = params.populateFromEsPayload;
+
+        /**
+         * The function to populate the session props context using the lookup function.
+         * 
+         * @private
+         * @type {Function}
+         */
+        this._populateFromLookup = params.populateFromLookup;
+
+        /**
+         * The function to initialize the sesion props base parameters.
+         * 
+         * @private
+         * @type {Object}
+         */
+        this._baseParams = params.baseParams;
         
         this.executeHandler = this.executeHandler.bind(this);
         this.intentHandler = this.intentHandler.bind(this);
         this.handleIntentAndNavigate = this.handleIntentAndNavigate.bind(this);
         this.handleRequest = this.handleRequest.bind(this);
-        this._getSessionPropsContext = this._getSessionPropsContext.bind(this);
+        this._populateFromEsPayload = this._populateFromEsPayload.bind(this);
+        this._populateFromLookup = this._populateFromLookup.bind(this);
+        this.getOrCreateEsSessionProps = this.getOrCreateEsSessionProps.bind(this);
+        this.createEsSessionProps = this.createEsSessionProps.bind(this);
     }
 
     //////////////////////////////////
@@ -194,6 +217,35 @@ class DialogFlowEsClient extends ConvoClient {
     }
     
     /**
+     * Fetch or Create the Dialogflow ES session props.
+     * 
+     * @param {Object} sessionId    The Dialogflow API endpoint.
+     * @param {string} sessionId    The Dialogflow session ID.
+     * @returns the Dialogflow ES session props.
+     */
+     getOrCreateEsSessionProps(agent, sessionId) {
+        let ctxSessionProps = agent.context.get(SESSION_PROPS);
+        if (!ctxSessionProps) {
+            console.log('Creating session props for Dialogflow session '+sessionId+'.');
+            ctxSessionProps = this.createEsSessionProps(sessionId);
+            agent.context.set(ctxSessionProps);
+        }
+        return ctxSessionProps;
+    }
+
+    /**
+     * Create the Dialogflow ES session props.
+     * 
+     * @param {string} sessionId    The Dialogflow session ID.
+     * @returns the Dialogflow ES session props.
+     */
+    createEsSessionProps(sessionId) {
+        this._baseParams.sessionId = sessionId;
+        let context = {name: SESSION_PROPS, lifespan: 99, parameters: this._baseParams };
+        return context;
+    }
+
+    /**
      * The main entry point from the dialogflow-fulfillment-nodejs API.
      * 
      * @param {WebhookClient} agent The dialogflow-fulfillment-nodejs API endpoint.
@@ -209,9 +261,11 @@ class DialogFlowEsClient extends ConvoClient {
                 throw new Error(sessionId+'|intentHandler: Error executing intentHandler: contextManager is undefined');
             }
             
-            let ctxSessionProps = await this._getSessionPropsContext(agent, sessionId, this._contextManager, this._connectorManager, agent.request_);
+            let ctxSessionProps = await this.getOrCreateEsSessionProps(agent, sessionId);
+            
+            console.debug(sessionId+'|intentHandler: Fetched the ctxSessionProps');
 
-            console.debug(sessionId+'|intentHandler: Fetched ctxSessionProps');
+            console.debug(sessionId+'|intentHandler: DEBUG: ctxSessionProps: '+JSON.stringify(ctxSessionProps));
 
             // Fetch the current sequence.
             let sequenceCurrent = this._sequenceManager.get(ctxSessionProps.parameters.sequenceCurrent);
@@ -233,6 +287,25 @@ class DialogFlowEsClient extends ConvoClient {
                 currentContext: context,
                 connectorManager: this._connectorManager
             });
+
+            if (ctxSessionProps.parameters.sessionInitialized === '0') {
+                console.debug(sessionId+'|intentHandler: Calling _populateFromEsPayload');
+                ctxSessionProps = await this._populateFromEsPayload(ctxSessionProps, dialogContext);
+                console.debug(sessionId+'|intentHandler: DEBUG: ctxSessionProps (after populateFromEsPayload): '+JSON.stringify(ctxSessionProps));
+                
+                if (ctxSessionProps.parameters.customerIdentified === '0' || ctxSessionProps.parameters.interactionSource === 'phone') {
+                    console.debug(sessionId+'|intentHandler: Calling _populateFromLookup');
+                    ctxSessionProps = await this._populateFromLookup(ctxSessionProps, dialogContext);
+                    console.debug(sessionId+'|intentHandler: DEBUG: ctxSessionProps (after populateFromLookup): '+JSON.stringify(ctxSessionProps));
+                }
+
+                ctxSessionProps.parameters.sessionInitialized = '1';
+                agent.context.set(ctxSessionProps);
+            } else {
+                console.debug(sessionId+'|intentHandler: session already initialized');
+            }
+
+            
 
             // Debug original query.
             console.debug(fmtLog('intentHandler', 'User Said: '+agent.query, dialogContext));
