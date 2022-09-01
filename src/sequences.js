@@ -33,9 +33,9 @@ class Sequence {
         if (params == undefined) { throw new Error('parameters object for creating Sequence objects is missing.'); }
         if (params.name == undefined) { throw new Error('name is a required parameter for creating Sequence objects.'); }
         if (params.activity == undefined) { throw new Error('activity is a required parameter for creating Sequence objects.'); }
+        if (params.identityRequired == undefined) { throw new Error('identityRequired is a required parameter for creating Sequence objects.'); }
         if (params.authRequired == undefined) { throw new Error('authRequired is a required parameter for creating Sequence objects.'); }
         if (params.params == undefined) { throw new Error('params is a required parameter for creating Sequence objects.'); }
-        if (params.createCase == undefined) { throw new Error('createCase is a required parameter for creating Sequence objects.'); }
         if (params.navigate == undefined) { throw new Error('navigate is a required parameter for creating Sequence objects.'); }
         if (params.breakIntents == undefined) { throw new Error('breakIntents is a required parameter for creating Sequence objects.'); }
 
@@ -56,12 +56,20 @@ class Sequence {
         this._activity = params.activity;
  
         /**
-         * The flag indicating of authentication is required for this sequence.
+         * The flag indicating authentication is required for this sequence.
          * 
          * @private
          * @type {boolean}
          */
         this._authRequired = params.authRequired;
+ 
+        /**
+         * The flag indicating identification is required for this sequence.
+         * 
+         * @private
+         * @type {boolean}
+         */
+        this._identityRequired = params.identityRequired;
  
         /**
          * The context parameters for this sequence.
@@ -70,14 +78,6 @@ class Sequence {
          * @type {Object}
          */
         this._params = params.params;
- 
-        /**
-         * The function pointer for creating a case if the sequence fails.
-         * 
-         * @private
-         * @type {Function}
-         */
-        this.createCase = params.createCase;
  
         /**
          * The function pointer for navigating a sequence forward.
@@ -125,6 +125,19 @@ class Sequence {
      * @param {string} value The value.
      */
     set activity(value) { this._activity = value; }
+
+    /**
+     * Gets the authRequired.
+     * 
+     * @return The authRequired.
+     */
+    get identityRequired() { return this._identityRequired; }
+    /**
+     * Sets the authRequired.
+     * 
+     * @param {string} value The value.
+     */
+    set identityRequired(value) { this._identityRequired = value; }
 
     /**
      * Gets the authRequired.
