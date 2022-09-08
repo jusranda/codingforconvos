@@ -341,7 +341,7 @@ class DialogFlowEsClient extends ConvoClient {
             sequenceCurrent.navigate(dialogContext);
             return;
         } catch (err) {
-            console.error(sessionId+'|intentHandler: Unhandled error: '+err.message);
+            console.error(sessionId+'|intentHandler: Unhandled error: '+err.stack);
         }
     }
 
