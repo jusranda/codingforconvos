@@ -712,4 +712,69 @@ class ContextManager {
     
 }
 
-module.exports = {DialogContext, ContextManager};
+/**
+ * Class for managing active sequence instances.
+ */
+class DefaultParameterManager {
+
+    /**
+     * Constructor for DefaultParameterManager objects.
+     * 
+     * @example
+     * const { DefaultParameterManager } = require(codingforconvos);
+     * const defaultParameterManager = new DefaultParameterManager();
+     */
+     constructor() {
+        /**
+         * The map of actively registered parameter sets.
+         * 
+         * @private
+         * @type {Array}
+         */
+        this._parameterSets = [];
+
+        /**
+         * The map of actively registered parameter sets.
+         * 
+         * @private
+         * @type {Map}
+         */
+         this._parameterMap = [];
+    }
+
+    /**
+     * Retrieve a connector by registered name.
+     * 
+     * @param {string} name 
+     * @returns the registered connector.
+     */
+    getInstance(name) {
+        return this._parameterMap.get(name);
+    }
+
+    /**
+     * Retrieve a connector by registered name.
+     * 
+     * @param {string} name 
+     * @returns the registered connector.
+     */
+    getSets() {
+        return this._parameterSets;
+    }
+
+    /**
+     * Registers a sequence with the sequence manager.
+     * 
+     * @param {Sequence} sequence The sequence object.
+     */
+    registerSessionParameters(setName, params) {
+        if (this._parameterMap.has(setName)) {
+            throw new Error('Registered parameter set '+setName+' is already exists.');
+        }
+        ;
+        this._parameterMap.set(setName, params);
+        this._parameterSets.push(params);
+    }
+}
+
+module.exports = {DialogContext, ContextManager, DefaultParameterManager};
