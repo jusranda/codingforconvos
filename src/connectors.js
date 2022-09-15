@@ -289,7 +289,7 @@ class ConnectorManager {
          * @private
          * @type {Map}
          */
-         this._parameterMap = [];
+         this._parameterMap = new Map();
     }
 
     /**
