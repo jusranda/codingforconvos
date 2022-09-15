@@ -36,6 +36,8 @@ class Connector {
         if (params.endpoint == undefined) { throw new Error('endpoint is a required parameter for creating Connector objects.'); }
         if (params.params == undefined) { throw new Error('params is a required parameter for creating Connector objects.'); }
 
+        let defaultSessionParams = (params.sessionParams != undefined) ? params.sessionParams : {};
+
         /**
          * The name of the connector.  Must be unique.
          * 
@@ -59,6 +61,14 @@ class Connector {
          * @type {Object}
          */
         this._params = params.params;
+
+        /**
+         * The session parameters for the connector.
+         * 
+         * @private
+         * @type {Object}
+         */
+        this._sessionParams = defaultSessionParams;
 
         /**
          * The status of the connector.
@@ -129,6 +139,19 @@ class Connector {
     set params(value) { this._params = value; }
 
     /**
+     * Gets the injected session parameters.
+     * 
+     * @return The injected session parameters.
+     */
+    get sessionParams() { return this._sessionParams; }
+    /**
+     * Sets the injected session parameters.
+     * 
+     * @param {string} value The value.
+     */
+    set sessionParams(value) { this._sessionParams = value; }
+
+    /**
      * Gets the status.
      * 
      * @return The status.
@@ -180,7 +203,11 @@ class ConnectorManager {
      * const { ConnectorManager } = require(codingforconvos);
      * const connectorManager = new ConnectorManager();
      */
-     constructor() {
+     constructor(params) {
+        // Validate the input parameters.
+        if (params == undefined) { throw new Error('parameters object for creating ConnectorManager objects is missing.'); }
+        if (params.defaultParameterManager == undefined) { throw new Error('defaultParameterManager is a required parameter for creating ConnectorManager objects.'); }
+        
         /**
          * The map of actively registered connectors.
          * 
@@ -188,6 +215,14 @@ class ConnectorManager {
          * @type {Map}
          */
         this._connectors = new Map();
+
+        /**
+         * The Default Parameter Manager.
+         * 
+         * @private
+         * @type {DefaultParameterManager}
+         */
+        this._defaultParameterManager = params.defaultParameterManager;
     }
 
     /**
@@ -201,6 +236,16 @@ class ConnectorManager {
     }
 
     /**
+     * Retrieve a connector by registered name.
+     * 
+     * @param {string} name 
+     * @returns the registered connector.
+     */
+    getDefaultPropertyManager() {
+        return this._defaultParameterManager;
+    }
+
+    /**
      * Registers a sequence with the sequence manager.
      * 
      * @param {Sequence} sequence The sequence object.
@@ -209,7 +254,8 @@ class ConnectorManager {
         if (this._connectors.has(connector.name)) {
             throw new Error('Connector '+connector.name+' is already registered.');
         }
-        ;
+
+        this._defaultParameterManager.registerSessionParameters(connector.name, connector.sessionParams);
         this._connectors.set(connector.name, connector);
     }
 }
