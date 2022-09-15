@@ -16,8 +16,8 @@
 const {DialogFlowEsClient} = require('./clients/dialogflow-es');
 const {Sequence,SequenceManager} = require('./sequences');
 const {Intent,IntentManager} = require('./intents');
-const {Connector,ConnectorManager} = require('./connectors');
-const {ContextManager,DefaultParameterManager} = require('./contexts');
+const {Connector,ConnectorManager,DefaultParameterManager} = require('./connectors');
+const {ContextManager} = require('./contexts');
 const {fmtLog} = require('./common');
 
 module.exports = {DialogFlowEsClient,Sequence,SequenceManager,Intent,IntentManager,ContextManager,DefaultParameterManager,Connector,ConnectorManager,fmtLog};
