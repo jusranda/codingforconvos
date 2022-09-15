@@ -17,7 +17,7 @@ const { ConvoClient } = require('../convos');
 const { WebhookClient } = require('dialogflow-fulfillment');
 const { SequenceManager } = require('../sequences');
 const { IntentManager } = require('../intents');
-const { DialogContext, ContextManager } = require('../contexts');
+const { DialogContext, ContextManager, DefaultParameterManager } = require('../contexts');
 const { fmtLog } = require('../common');
 const { ConnectorManager } = require('../connectors');
 
@@ -95,6 +95,7 @@ class DialogFlowEsClient extends ConvoClient {
         if (params.intentManager == undefined) { throw new Error('intentManager is a required parameter for creating DialogFlowEsClient objects.'); }
         if (params.contextManager == undefined) { throw new Error('contextManager is a required parameter for creating DialogFlowEsClient objects.'); }
         if (params.connectorManager == undefined) { throw new Error('connectorManager is a required parameter for creating DialogFlowEsClient objects.'); }
+        if (params.defaultParameterManager == undefined) { throw new Error('defaultParameterManager is a required parameter for creating DialogFlowEsClient objects.'); }
         if (params.populateFromEsPayload == undefined) { throw new Error('populateFromEsPayload is a required parameter for creating DialogFlowEsClient objects.'); }
         if (params.populateFromLookup == undefined) { throw new Error('populateFromLookup is a required parameter for creating DialogFlowEsClient objects.'); }
         if (params.baseParams == undefined) { throw new Error('baseParams is a required parameter for creating DialogFlowEsClient objects.'); }
@@ -132,12 +133,20 @@ class DialogFlowEsClient extends ConvoClient {
         this._connectorManager = params.connectorManager;
 
         /**
+         * The intent manager.
+         * 
+         * @private
+         * @type {DefaultParameterManager}
+         */
+        this._defaultParameterManager = params.defaultParameterManager;
+
+         /**
          * The function to populate the session props context using the Dialogflow ES payload.
          * 
          * @private
          * @type {Function}
          */
-         this._populateFromEsPayload = params.populateFromEsPayload;
+        this._populateFromEsPayload = params.populateFromEsPayload;
 
         /**
          * The function to populate the session props context using the lookup function.
@@ -223,11 +232,24 @@ class DialogFlowEsClient extends ConvoClient {
      * @param {string} sessionId    The Dialogflow session ID.
      * @returns the Dialogflow ES session props.
      */
-     getOrCreateEsSessionProps(agent, sessionId) {
+    getOrCreateEsSessionProps(agent, sessionId) {
         let ctxSessionProps = agent.context.get(SESSION_PROPS);
         if (!ctxSessionProps) {
+            // Initialize base Dialogflow ES context.
             console.log('Creating session props for Dialogflow session '+sessionId+'.');
             ctxSessionProps = this.createEsSessionProps(sessionId);
+
+            // Register dynamic parameter sets.
+            let paramSets = this._defaultParameterManager.getSets();
+            for (var paramSet in paramSets) {
+                for (var param in paramSet.params) {
+                    if (Object.prototype.hasOwnProperty.call(paramSet.params, param)) {
+                        ctxSessionProps[param] = paramSet.params[param];
+                    }
+                }
+            }
+
+            // Persist parameters to Dialogflow ES session props context.
             agent.context.set(ctxSessionProps);
         }
         return ctxSessionProps;
