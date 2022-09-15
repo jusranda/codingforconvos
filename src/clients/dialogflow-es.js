@@ -233,14 +233,9 @@ class DialogFlowEsClient extends ConvoClient {
             // Register dynamic parameter sets.
             let paramSets = this._connectorManager.getDefaultPropertyManager().getSets();
 
-            console.log('paramSets: '+JSON.stringify(paramSets));
-
             for (var paramSetKey in paramSets) {
                 const paramSet = paramSets[paramSetKey];
-                console.log('paramSet: '+JSON.stringify(paramSet));
-
                 for (var param in paramSet) {
-                    console.log('paramSet.param['+param+'] : '+paramSet[param]);
                     if (Object.prototype.hasOwnProperty.call(paramSet, param)) {
                         ctxSessionProps.parameters[param] = paramSet[param];
                     }
