@@ -95,7 +95,6 @@ class DialogFlowEsClient extends ConvoClient {
         if (params.intentManager == undefined) { throw new Error('intentManager is a required parameter for creating DialogFlowEsClient objects.'); }
         if (params.contextManager == undefined) { throw new Error('contextManager is a required parameter for creating DialogFlowEsClient objects.'); }
         if (params.connectorManager == undefined) { throw new Error('connectorManager is a required parameter for creating DialogFlowEsClient objects.'); }
-        if (params.defaultParameterManager == undefined) { throw new Error('defaultParameterManager is a required parameter for creating DialogFlowEsClient objects.'); }
         if (params.populateFromEsPayload == undefined) { throw new Error('populateFromEsPayload is a required parameter for creating DialogFlowEsClient objects.'); }
         if (params.populateFromLookup == undefined) { throw new Error('populateFromLookup is a required parameter for creating DialogFlowEsClient objects.'); }
         if (params.baseParams == undefined) { throw new Error('baseParams is a required parameter for creating DialogFlowEsClient objects.'); }
@@ -133,14 +132,6 @@ class DialogFlowEsClient extends ConvoClient {
         this._connectorManager = params.connectorManager;
 
         /**
-         * The intent manager.
-         * 
-         * @private
-         * @type {DefaultParameterManager}
-         */
-        this._defaultParameterManager = params.defaultParameterManager;
-
-         /**
          * The function to populate the session props context using the Dialogflow ES payload.
          * 
          * @private
