@@ -239,11 +239,10 @@ class DialogFlowEsClient extends ConvoClient {
                 const paramSet = paramSets[paramSetKey];
                 console.log('paramSet: '+JSON.stringify(paramSet));
 
-                for (var param in paramSetKey) {
-                    console.log('paramSet.param: '+param);
-                    console.log('paramSet.param.stringify: '+JSON.stringify(param));
-                    if (Object.prototype.hasOwnProperty.call(paramSets, param)) {
-                        ctxSessionProps[param] = paramSetKey[param];
+                for (var param in paramSet) {
+                    console.log('paramSet.param['+param+'] : '+paramSet[param]);
+                    if (Object.prototype.hasOwnProperty.call(paramSet, param)) {
+                        ctxSessionProps[param] = paramSet[param];
                     }
                 }
             }
