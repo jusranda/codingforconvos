@@ -242,7 +242,7 @@ class DialogFlowEsClient extends ConvoClient {
                 for (var param in paramSet) {
                     console.log('paramSet.param['+param+'] : '+paramSet[param]);
                     if (Object.prototype.hasOwnProperty.call(paramSet, param)) {
-                        ctxSessionProps[param] = paramSet[param];
+                        ctxSessionProps.parameters[param] = paramSet[param];
                     }
                 }
             }
