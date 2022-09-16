@@ -297,13 +297,13 @@ class DialogContext {
      * 
      * @return The payload.
      */
-    get payload() { return this._dialogflowAgent.request_.body.originalDetectIntentRequest; }
+    get payload() { return this._dialogflowAgent.request_.body.originalDetectIntentRequest.payload; }
     /**
      * Sets the payload.
      * 
      * @param {Object} value The value.
      */
-    set payload(value) { this._dialogflowAgent.request_.body.originalDetectIntentRequest = value; }
+    set payload(value) { this._dialogflowAgent.request_.body.originalDetectIntentRequest.payload = value; }
 
     /**
      * Sets the fulfillment text response according to the provided text, or the Dialogflow default response.
