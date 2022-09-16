@@ -203,7 +203,7 @@ class ConnectorManager {
      * const { ConnectorManager } = require(codingforconvos);
      * const connectorManager = new ConnectorManager();
      */
-     constructor(params) {
+    constructor(params) {
         // Validate the input parameters.
         if (params == undefined) { throw new Error('parameters object for creating ConnectorManager objects is missing.'); }
         if (params.defaultParameterManager == undefined) { throw new Error('defaultParameterManager is a required parameter for creating ConnectorManager objects.'); }
@@ -274,9 +274,9 @@ class ConnectorManager {
      * const { DefaultParameterManager } = require(codingforconvos);
      * const defaultParameterManager = new DefaultParameterManager();
      */
-     constructor() {
+    constructor() {
         /**
-         * The map of actively registered parameter sets.
+         * The set of actively registered parameter sets.
          * 
          * @private
          * @type {Array}
@@ -289,7 +289,23 @@ class ConnectorManager {
          * @private
          * @type {Map}
          */
-         this._parameterMap = new Map();
+        this._parameterMap = new Map();
+
+        /**
+         * The set of actively registered payload handlers.
+         * 
+         * @private
+         * @type {Array}
+         */
+        this._populateFromPayloadHandlers = [];
+
+        /**
+         * The map of actively registered payload handlers.
+         * 
+         * @private
+         * @type {Map}
+         */
+        this._populateFromPayloadHandlerMap = new Map();
     }
 
     /**
@@ -313,18 +329,52 @@ class ConnectorManager {
     }
 
     /**
-     * Registers a sequence with the sequence manager.
+     * Retrieve the payload handlers.
      * 
-     * @param {Sequence} sequence The sequence object.
+     * @returns the registered connector.
      */
-    registerSessionParameters(setName, params) {
-        if (this._parameterMap.has(setName)) {
-            throw new Error('Registered parameter set '+setName+' is already exists.');
+    getPayloadHandlers() {
+        return this._populateFromPayloadHandlers;
+    }
+
+    /**
+     * Retrieve the payload handlers.
+     * 
+     * @param {string} name 
+     * @returns the registered connector.
+     */
+    getPayloadHandler(name) {
+        return this._populateFromPayloadHandlerMap.get(name);
+    }
+
+    /**
+     * Registers a payload handler.
+     * 
+     * @param {*} name 
+     * @param {*} handler 
+     */
+    registerPayloadHandlers(name, handler) {
+        if (this._populateFromPayloadHandlerMap.has(name)) {
+            throw new Error('Registered payload handler '+name+' is already exists.');
         }
-        ;
-        this._parameterMap.set(setName, params);
+        this._populateFromPayloadHandlerMap.set(name, handler);
+        this._populateFromPayloadHandlers.push(handler);
+    }
+
+    /**
+     * Registers a parameter set.
+     * 
+     * @param {string} name     The parameter set name.
+     * @param {Object} params   The parameter set.
+     */
+    registerSessionParameters(name, params) {
+        if (this._parameterMap.has(name)) {
+            throw new Error('Registered parameter set '+name+' is already exists.');
+        }
+        this._parameterMap.set(name, params);
         this._parameterSets.push(params);
     }
+
 }
 
 module.exports = {Connector,ConnectorManager,DefaultParameterManager};

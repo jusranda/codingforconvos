@@ -305,8 +305,19 @@ class DialogFlowEsClient extends ConvoClient {
 
             if (ctxSessionProps.parameters.sessionInitialized === '0') {
                 console.debug(sessionId+'|intentHandler: Calling _populateFromEsPayload');
+                
+                // Populate from base injected payload handler.
                 ctxSessionProps = await this._populateFromEsPayload(ctxSessionProps, dialogContext);
-                console.debug(sessionId+'|intentHandler: DEBUG: ctxSessionProps (after populateFromEsPayload): '+JSON.stringify(ctxSessionProps));
+                
+                // Populate from dynamically registered payload handlers.
+                let payloadHandlers = this._connectorManager.getDefaultPropertyManager().getPayloadHandlers();
+                for (var payloadHandlerIdx in payloadHandlers) {
+                    const payloadHandler = payloadHandlers[payloadHandlerIdx];
+
+                    ctxSessionProps = await payloadHandler (ctxSessionProps, dialogContext);
+                }
+
+                console.debug(sessionId+'|intentHandler: DEBUG: ctxSessionProps (after populateFromPayload): '+JSON.stringify(ctxSessionProps));
                 
                 if (ctxSessionProps.parameters.customerIdentified === '0' || ctxSessionProps.parameters.interactionSource === 'phone') {
                     console.debug(sessionId+'|intentHandler: Calling _populateFromLookup');
