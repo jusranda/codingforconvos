@@ -304,7 +304,7 @@ class DialogFlowEsClient extends ConvoClient {
             });
 
             if (ctxSessionProps.parameters.sessionInitialized === '0') {
-                console.debug(sessionId+'|intentHandler: Calling _populateFromEsPayload');
+                console.debug(sessionId+'|intentHandler: Calling _populateFromPayload');
                 
                 // Populate from base injected payload handler.
                 ctxSessionProps = await this._populateFromEsPayload(ctxSessionProps, dialogContext);
@@ -313,7 +313,6 @@ class DialogFlowEsClient extends ConvoClient {
                 let payloadHandlers = this._connectorManager.getDefaultPropertyManager().getPayloadHandlers();
                 for (var payloadHandlerIdx in payloadHandlers) {
                     const payloadHandler = payloadHandlers[payloadHandlerIdx];
-
                     ctxSessionProps = await payloadHandler (ctxSessionProps, dialogContext);
                 }
 
@@ -330,8 +329,6 @@ class DialogFlowEsClient extends ConvoClient {
             } else {
                 console.debug(sessionId+'|intentHandler: session already initialized');
             }
-
-            
 
             // Debug original query.
             console.debug(fmtLog('intentHandler', 'User Said: '+agent.query, dialogContext));
