@@ -37,7 +37,8 @@ class Connector {
         if (params.params == undefined) { throw new Error('params is a required parameter for creating Connector objects.'); }
 
         let defaultSessionParams = (params.sessionParams != undefined) ? params.sessionParams : {};
-
+        let defaultPopulateFromPayload = (params.populateFromPayload != undefined) ? params.populateFromPayload : (context, dialogContext) => { return context; };
+        
         /**
          * The name of the connector.  Must be unique.
          * 
@@ -71,6 +72,14 @@ class Connector {
         this._sessionParams = defaultSessionParams;
 
         /**
+         * The populate from payload function handler.
+         * 
+         * @private
+         * @type {Function}
+         */
+        this._populateFromPayload = defaultPopulateFromPayload;
+
+         /**
          * The status of the connector.
          * 
          * 0 - active-healthy
@@ -150,6 +159,19 @@ class Connector {
      * @param {string} value The value.
      */
     set sessionParams(value) { this._sessionParams = value; }
+
+    /**
+     * Gets the payload function handler.
+     * 
+     * @return The payload function handler.
+     */
+    get populateFromPayload() { return this._populateFromPayload; }
+    /**
+     * Sets the payload function handler.
+     * 
+     * @param {Function} value The value.
+     */
+    set populateFromPayload(value) { this._populateFromPayload = value; }
 
     /**
      * Gets the status.
@@ -256,6 +278,7 @@ class ConnectorManager {
         }
 
         this._defaultParameterManager.registerSessionParameters(connector.name, connector.sessionParams);
+        this._defaultParameterManager.registerPayloadHandler(connector.name, connector.populateFromPayload);
         this._connectors.set(connector.name, connector);
     }
 }
@@ -353,7 +376,7 @@ class ConnectorManager {
      * @param {*} name 
      * @param {*} handler 
      */
-    registerPayloadHandlers(name, handler) {
+    registerPayloadHandler(name, handler) {
         if (this._populateFromPayloadHandlerMap.has(name)) {
             throw new Error('Registered payload handler '+name+' is already exists.');
         }
