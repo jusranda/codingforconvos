@@ -27,7 +27,6 @@ const CTX_WELCOME = 'welcome';
 const CTX_RFC = 'reasonforcontact';
 const CTX_AUTH = 'authentication';
 const CTX_PWRESET = 'passwordreset';
-const CTX_COMMON = 'common';
 
 /**
  * Class for representing global and local contexts.
@@ -290,6 +289,21 @@ class DialogContext {
      * @param {string} value The value.
      */
     set currentAction(value) { this._dialogflowAgent.action = value; }
+
+    // TODO: Abstract the payload to the dialogflow-es client.
+
+    /**
+     * Gets the payload.
+     * 
+     * @return The payload.
+     */
+    get payload() { return this._dialogflowAgent.request_.body.originalDetectIntentRequest; }
+    /**
+     * Sets the payload.
+     * 
+     * @param {Object} value The value.
+     */
+    set payload(value) { this._dialogflowAgent.request_.body.originalDetectIntentRequest = value; }
 
     /**
      * Sets the fulfillment text response according to the provided text, or the Dialogflow default response.
