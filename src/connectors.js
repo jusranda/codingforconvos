@@ -268,9 +268,9 @@ class ConnectorManager {
     }
 
     /**
-     * Registers a sequence with the sequence manager.
+     * Registers a connector with the connector manager.
      * 
-     * @param {Sequence} sequence The sequence object.
+     * @param {Sequence} sequence The connector object.
      */
     registerConnector(connector) {
         if (this._connectors.has(connector.name)) {
@@ -286,7 +286,7 @@ class ConnectorManager {
 
 
 /**
- * Class for managing active sequence instances.
+ * Class for managing default parameters.
  */
  class DefaultParameterManager {
 
