@@ -17,9 +17,9 @@ const { ConvoClient } = require('../convos');
 const { WebhookClient } = require('dialogflow-fulfillment');
 const { SequenceManager } = require('../sequences');
 const { IntentManager } = require('../intents');
-const { DialogContext, ContextManager, DefaultParameterManager } = require('../contexts');
+const { DialogContext, ContextManager } = require('../contexts');
 const { fmtLog } = require('../common');
-const { ConnectorManager, Connector } = require('../connectors');
+const { ConnectorManager, Connector, DefaultParameterManager } = require('../connectors');
 
 // Define Global Context Constants.
 const SESSION_PROPS = 'sessionprops';
