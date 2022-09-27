@@ -19,7 +19,7 @@ const { SequenceManager } = require('../sequences');
 const { IntentManager } = require('../intents');
 const { DialogContext, ContextManager, DefaultParameterManager } = require('../contexts');
 const { fmtLog } = require('../common');
-const { ConnectorManager } = require('../connectors');
+const { ConnectorManager, Connector } = require('../connectors');
 
 // Define Global Context Constants.
 const SESSION_PROPS = 'sessionprops';
@@ -91,21 +91,17 @@ class DialogFlowEsClient extends ConvoClient {
 
         // Validate the input parameters.
         if (params == undefined) { throw new Error('parameters object for creating DialogFlowEsClient objects is missing.'); }
-        if (params.sequenceManager == undefined) { throw new Error('sequenceManager is a required parameter for creating DialogFlowEsClient objects.'); }
-        if (params.intentManager == undefined) { throw new Error('intentManager is a required parameter for creating DialogFlowEsClient objects.'); }
-        if (params.contextManager == undefined) { throw new Error('contextManager is a required parameter for creating DialogFlowEsClient objects.'); }
-        if (params.connectorManager == undefined) { throw new Error('connectorManager is a required parameter for creating DialogFlowEsClient objects.'); }
+        if (params.baseParams == undefined) { throw new Error('baseParams is a required parameter for creating DialogFlowEsClient objects.'); }
         if (params.populateFromEsPayload == undefined) { throw new Error('populateFromEsPayload is a required parameter for creating DialogFlowEsClient objects.'); }
         if (params.populateFromLookup == undefined) { throw new Error('populateFromLookup is a required parameter for creating DialogFlowEsClient objects.'); }
-        if (params.baseParams == undefined) { throw new Error('baseParams is a required parameter for creating DialogFlowEsClient objects.'); }
-
+        
         /**
          * The sequence manager.
          * 
          * @private
          * @type {SequenceManager}
          */
-        this._sequenceManager = params.sequenceManager;
+        this._sequenceManager = (params.sequenceManager != undefined) ? params.sequenceManager : new SequenceManager();
 
         /**
          * The intent manager.
@@ -113,23 +109,25 @@ class DialogFlowEsClient extends ConvoClient {
          * @private
          * @type {IntentManager}
          */
-        this._intentManager = params.intentManager;
+        this._intentManager = (params.intentManager != undefined) ? params.intentManager : new IntentManager();
 
         /**
-         * The intent manager.
+         * The context manager.
          * 
          * @private
          * @type {ContextManager}
          */
-        this._contextManager = params.contextManager;
+        this._contextManager = (params.contextManager != undefined) ? params.contextManager : new ContextManager(this._sequenceManager);
 
         /**
-         * The intent manager.
+         * The connector manager.
          * 
          * @private
          * @type {ConnectorManager}
          */
-        this._connectorManager = params.connectorManager;
+        this._connectorManager = (params.connectorManager != undefined) ? params.connectorManager : new ConnectorManager({
+            defaultParameterManager: new DefaultParameterManager()
+        });;
 
         /**
          * The function to populate the session props context using the Dialogflow ES payload.
@@ -163,6 +161,46 @@ class DialogFlowEsClient extends ConvoClient {
         this._populateFromLookup = this._populateFromLookup.bind(this);
         this.getOrCreateEsSessionProps = this.getOrCreateEsSessionProps.bind(this);
         this.createEsSessionProps = this.createEsSessionProps.bind(this);
+        
+        this.registerConnector = this.registerConnector.bind(this);
+        this.registerSequence = this.registerSequence.bind(this);
+        this.registerIntent = this.registerIntent.bind(this);
+    }
+
+    /**
+     * Registers a connector with the connector manager.
+     * 
+     * @param {Connector} sequence The connector object.
+     */
+    registerConnector(connector) {
+        this._connectorManager.registerConnector(connector);
+    }
+
+    /**
+     * Registers a sequence with the sequence manager.
+     * 
+     * @param {Sequence} sequence The sequence object.
+     */
+    registerSequence(sequence) {
+        this._sequenceManager.registerSequence(sequence)
+    }
+
+    /**
+     * Registers an intent with the intent manager.
+     * 
+     * @param {Intent} intent The intent object.
+     */
+    registerIntent(intent) {
+        this._intentManager.registerIntent(intent);
+    }
+
+    /**
+     * Registers an array of intent actions with shared handling with the intent manager.
+     * 
+     * @param {Object} params The list of actions and associated sequenceName and handler.
+     */
+    registerIntents(params) {
+        this._intentManager.registerIntents(params);
     }
 
     //////////////////////////////////
