@@ -270,7 +270,7 @@ class ConnectorManager {
     /**
      * Registers a connector with the connector manager.
      * 
-     * @param {Sequence} sequence The connector object.
+     * @param {Connector} sequence The connector object.
      */
     registerConnector(connector) {
         if (this._connectors.has(connector.name)) {
