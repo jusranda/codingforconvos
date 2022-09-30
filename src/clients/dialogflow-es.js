@@ -111,6 +111,10 @@ class DialogFlowEsClient extends ConvoClient {
                 none: '0'
             },
             navigate: (dialogContext) => { // Navigate the sequence forward.
+                if (dialogContext.params.responseAlreadySet === '1') {
+                    return;
+                }
+
                 dialogContext.setFulfillmentText();
                 console.log('action: '+dialogContext.currentAction+', lastFulfillmentText: '+dialogContext.params.lastFulfillmentText);
                 dialogContext.respondWithText();
