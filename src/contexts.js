@@ -352,6 +352,7 @@ class DialogContext {
         this._dialogflowAgent.add(
             ((fulfillmentText !== '|') ? fulfillmentText : this._sessionParams.parameters.lastFulfillmentText)
         );
+        this.setParam(this._sessionParams, 'responseAlreadySet', '1');
     }
 
     /**
@@ -369,8 +370,11 @@ class DialogContext {
         this._dialogflowAgent.add(
             ((fulfillmentText !== '|') ? fulfillmentText : this._sessionParams.parameters.lastFulfillmentText)
         ); 
-        this.setParam(this._sessionParams, 'lastEvent', eventName);
         let event = this._dialogflowAgent.setFollowupEvent(eventName);
+        this.setParams (this._sessionParams, {
+            'responseAlreadySet': '1',
+            'lastEvent': eventName
+        });
         return event;
     }
 
