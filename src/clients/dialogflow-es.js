@@ -242,10 +242,6 @@ class DialogFlowEsClient extends ConvoClient {
     async handleIntentAndNavigate(dialogContext, intentAction) {
         console.log(fmtLog('handleIntentAndNavigate', intentAction+' found in intentManager', dialogContext));
 
-        // Fetch the common sequence.
-        // TODO: Remove once tested successfully using intent.waitForReply.
-        //let sequenceCommon = this._sequenceManager.get('common'); // FIXME: Move this to a common library.
-                
         // Call await on handler, not on get.
         let intent = this._intentManager.get(intentAction);
         let funcHandler = intent.handler;
@@ -253,8 +249,6 @@ class DialogFlowEsClient extends ConvoClient {
 
         // Update the sequence and break if terminating statement or question.
         let sequenceUpdated = this._sequenceManager.get(dialogContext.sessionParams.parameters.sequenceCurrent); // Get sequence after intent handler has run in case it updated.
-        // TODO: Remove once tested successfully using intent.waitForReply.
-        // if (sequenceUpdated.breakIntents.has(intentAction) || sequenceCommon.breakIntents.has(intentAction)) {
         if (intent.waitForReply === true) {
             console.log(fmtLog('handleIntentAndNavigate', 'breakIntents - Calling respondWithText()', dialogContext));
             dialogContext.setParam(dialogContext.sessionParams, 'lastAction', intentAction); // Update lastAction for break intents.
