@@ -15,7 +15,7 @@
 
 const { ConvoClient } = require('../convos');
 const { WebhookClient } = require('dialogflow-fulfillment');
-const { SequenceManager } = require('../sequences');
+const { Sequence, SequenceManager } = require('../sequences');
 const { IntentManager } = require('../intents');
 const { DialogContext, ContextManager } = require('../contexts');
 const { fmtLog } = require('../common');
