@@ -243,35 +243,37 @@ class DialogFlowEsClient extends ConvoClient {
         let funcHandler = intent.handler;
         await funcHandler (dialogContext);
 
-        console.log(fmtLog('handleIntentAndNavigate', intentAction+' funcHandler complete', dialogContext));
+        //console.log(fmtLog('handleIntentAndNavigate', intentAction+' funcHandler complete', dialogContext));
 
         // Update the sequence and break if terminating statement or question.
         let sequenceUpdated = this._sequenceManager.get(dialogContext.sessionParams.parameters.sequenceCurrent); // Get sequence after intent handler has run in case it updated.
         
-        console.log(fmtLog('handleIntentAndNavigate', 'updated sequence: '+sequenceUpdated.name, dialogContext));
+        //console.log(fmtLog('handleIntentAndNavigate', 'updated sequence: '+sequenceUpdated.name, dialogContext));
 
         // Handle response already set.
         if (dialogContext.sessionParams.parameters.responseAlreadySet === '1') {
-            console.log(fmtLog('handleIntentAndNavigate', 'responseAlreadySet === \'1\'', dialogContext));
+            //console.log(fmtLog('handleIntentAndNavigate', 'responseAlreadySet === \'1\'', dialogContext));
             dialogContext.setParam(dialogContext.sessionParams, 'responseAlreadySet', '0');
             return;
         }
-        console.log(fmtLog('handleIntentAndNavigate', 'responseAlreadySet === \'0\'', dialogContext));
+        //console.log(fmtLog('handleIntentAndNavigate', 'responseAlreadySet === \'0\'', dialogContext));
 
         // Handle response wait for reply set.
         if (intent.waitForReply === true) {
-            console.log(fmtLog('handleIntentAndNavigate', 'intent.waitForRepl === true', dialogContext));
+            //console.log(fmtLog('handleIntentAndNavigate', 'intent.waitForRepl === true', dialogContext));
             console.log(fmtLog('handleIntentAndNavigate', 'breakIntents - Calling respondWithText()', dialogContext));
             dialogContext.setParam(dialogContext.sessionParams, 'lastAction', intentAction); // Update lastAction for break intents.
             dialogContext.respondWithText(dialogContext.sessionParams.parameters.lastFulfillmentText);
+            dialogContext.setParam(dialogContext.sessionParams, 'responseAlreadySet', '0');
             return;
         }
-        console.log(fmtLog('handleIntentAndNavigate', 'intent.waitForRepl === false', dialogContext));
+        //console.log(fmtLog('handleIntentAndNavigate', 'intent.waitForRepl === false', dialogContext));
         
         // Handle authentication.
         if (sequenceUpdated.authRequired === true && dialogContext.isAuthRequired()) {
             console.log(fmtLog('handleIntentAndNavigate', 'Calling handleRequireAuthentication()', dialogContext));
             this._contextManager.handleRequireAuthentication(dialogContext);
+            dialogContext.setParam(dialogContext.sessionParams, 'responseAlreadySet', '0');
             return;
         }
 
@@ -279,6 +281,7 @@ class DialogFlowEsClient extends ConvoClient {
 
         // Navigate the sequence forward.
         sequenceUpdated.navigate(dialogContext);
+        dialogContext.setParam(dialogContext.sessionParams, 'responseAlreadySet', '0');
         return;
     }
     
