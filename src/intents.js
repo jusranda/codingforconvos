@@ -31,8 +31,9 @@ class Intent {
         // Validate the input parameters.
         if (params == undefined) { throw new Error('parameters object for creating Intent objects is missing.'); }
         if (params.action == undefined) { throw new Error('action is a required parameter for creating Intent objects.'); }
-        if (params.sequenceName == undefined) { throw new Error('sequenceName is a required parameter for creating Intent objects ('+params.action+').'); }
         if (params.handler == undefined) { throw new Error('handler is a required parameter for creating Intent objects ('+params.action+').'); }
+
+        const finalSequenceName = (params.sequenceName != undefined) ? params.sequenceName : 'unassociated';
 
         /**
          * The intent action value.
@@ -48,7 +49,7 @@ class Intent {
          * @private
          * @type {string}
          */
-        this._sequenceName = params.sequenceName;
+        this._sequenceName = finalSequenceName;
 
         /**
          * The flag indicating this intent should break to wait for reply.

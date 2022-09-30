@@ -102,6 +102,21 @@ class DialogFlowEsClient extends ConvoClient {
          * @type {SequenceManager}
          */
         this._sequenceManager = (params.sequenceManager != undefined) ? params.sequenceManager : new SequenceManager();
+        this._sequenceManager.registerSequence(new Sequence({
+            name: 'unassociated', // Sequence name, also used for Dialogflow context name.
+            activity: 'what we were doing', // Activity description, used in course correction.
+            identityRequired: false,
+            authRequired: false,
+            params: {
+                none: '0'
+            },
+            navigate: (dialogContext) => { // Navigate the sequence forward.
+                dialogContext.setFulfillmentText();
+                console.log('action: '+dialogContext.currentAction+', lastFulfillmentText: '+dialogContext.params.lastFulfillmentText);
+                dialogContext.respondWithText();
+                return;
+            }
+        }));
 
         /**
          * The intent manager.
