@@ -253,7 +253,6 @@ class DialogFlowEsClient extends ConvoClient {
         // Handle response already set.
         if (dialogContext.sessionParams.parameters.responseAlreadySet === '1') {
             //console.log(fmtLog('handleIntentAndNavigate', 'responseAlreadySet === \'1\'', dialogContext));
-            dialogContext.setParam(dialogContext.sessionParams, 'responseAlreadySet', '0');
             return;
         }
         //console.log(fmtLog('handleIntentAndNavigate', 'responseAlreadySet === \'0\'', dialogContext));
@@ -264,7 +263,6 @@ class DialogFlowEsClient extends ConvoClient {
             console.log(fmtLog('handleIntentAndNavigate', 'breakIntents - Calling respondWithText()', dialogContext));
             dialogContext.setParam(dialogContext.sessionParams, 'lastAction', intentAction); // Update lastAction for break intents.
             dialogContext.respondWithText(dialogContext.sessionParams.parameters.lastFulfillmentText);
-            dialogContext.setParam(dialogContext.sessionParams, 'responseAlreadySet', '0');
             return;
         }
         //console.log(fmtLog('handleIntentAndNavigate', 'intent.waitForRepl === false', dialogContext));
@@ -273,7 +271,6 @@ class DialogFlowEsClient extends ConvoClient {
         if (sequenceUpdated.authRequired === true && dialogContext.isAuthRequired()) {
             console.log(fmtLog('handleIntentAndNavigate', 'Calling handleRequireAuthentication()', dialogContext));
             this._contextManager.handleRequireAuthentication(dialogContext);
-            dialogContext.setParam(dialogContext.sessionParams, 'responseAlreadySet', '0');
             return;
         }
 
@@ -281,7 +278,6 @@ class DialogFlowEsClient extends ConvoClient {
 
         // Navigate the sequence forward.
         sequenceUpdated.navigate(dialogContext);
-        dialogContext.setParam(dialogContext.sessionParams, 'responseAlreadySet', '0');
         return;
     }
     
@@ -406,6 +402,8 @@ class DialogFlowEsClient extends ConvoClient {
             // Handle a stand-alone intent.
             if (this._intentManager.has(agent.action)) {
                 await this.handleIntentAndNavigate(dialogContext, agent.action);
+                ctxSessionProps.parameters.responseAlreadySet = '0';
+                agent.context.set(ctxSessionProps);
                 return;
             }
 
@@ -416,6 +414,8 @@ class DialogFlowEsClient extends ConvoClient {
             dialogContext.currentContext = baseContext;
             if (this._intentManager.has(compositeIntentName)) {
                 await this.handleIntentAndNavigate(dialogContext, compositeIntentName);
+                ctxSessionProps.parameters.responseAlreadySet = '0';
+                agent.context.set(ctxSessionProps);
                 return;
             }
 
@@ -423,6 +423,8 @@ class DialogFlowEsClient extends ConvoClient {
             let actiontemplateTail = (agent.action.indexOf('.') !== -1) ? agent.action.split('.').pop() : agent.action;
             if (this._intentManager.has(actiontemplateTail)) {
                 await this.handleIntentAndNavigate(dialogContext, actiontemplateTail);
+                ctxSessionProps.parameters.responseAlreadySet = '0';
+                agent.context.set(ctxSessionProps);
                 return;
             }
 
@@ -431,6 +433,8 @@ class DialogFlowEsClient extends ConvoClient {
             dialogContext.setFulfillmentText();
             console.log(fmtLog('intentHandler', 'Calling '+sequenceCurrent.name+'.navigate()', dialogContext));
             sequenceCurrent.navigate(dialogContext);
+            ctxSessionProps.parameters.responseAlreadySet = '0';
+            agent.context.set(ctxSessionProps);
             return;
         } catch (err) {
             console.error(sessionId+'|intentHandler: Unhandled error: '+err.stack);
