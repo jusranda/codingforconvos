@@ -247,7 +247,7 @@ class DialogFlowEsClient extends ConvoClient {
         let sequenceUpdated = this._sequenceManager.get(dialogContext.sessionParams.parameters.sequenceCurrent); // Get sequence after intent handler has run in case it updated.
         
         // Handle response already set.
-        if (dialogContext.params.responseAlreadySet === '1') {
+        if (dialogContext.sessionParams.parameters.responseAlreadySet === '1') {
             dialogContext.setParam(dialogContext.sessionParams, 'responseAlreadySet', '0');
             return;
         }
