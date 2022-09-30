@@ -37,8 +37,7 @@ class Sequence {
         if (params.authRequired == undefined) { throw new Error('authRequired is a required parameter for creating Sequence objects.'); }
         if (params.params == undefined) { throw new Error('params is a required parameter for creating Sequence objects.'); }
         if (params.navigate == undefined) { throw new Error('navigate is a required parameter for creating Sequence objects.'); }
-        if (params.breakIntents == undefined) { throw new Error('breakIntents is a required parameter for creating Sequence objects.'); }
-
+        
         /**
          * The name of the sequence.
          * 
@@ -88,15 +87,11 @@ class Sequence {
         this.navigate = params.navigate.bind(this);
  
         /**
-         * The map of intents to trigger a skip of the navigation step.  The result 
-         * behaviour is to immediately return after running the intent handler.
+         * The function pointer for navigating a sequence forward.
          * 
          * @private
-         * @type {Map}
+         * @type {Function}
          */
-        this._breakIntents = new Map();
-        params.breakIntents.forEach(breakIntent => this._breakIntents.set(breakIntent.action, breakIntent.trigger));
-
         this.navigate = this.navigate.bind(this);
     }
 
@@ -164,22 +159,7 @@ class Sequence {
      * @param {string} value The value.
      */
     set params(value) { this._params = value; }
-
-    /**
-     * Gets the breakIntents.
-     * 
-     * @return The breakIntents.
-     */
-    get breakIntents() { return this._breakIntents; }
-    /**
-     * Sets the breakIntents.
-     * 
-     * @param {string} value The value.
-     */
-    set breakIntents(value) {
-        this._breakIntents.clear();
-        value.forEach(breakIntent => this._breakIntents.set(breakIntent.action, breakIntent.trigger));
-    }
+    
 }
 
 /**
