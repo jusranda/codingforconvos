@@ -111,10 +111,6 @@ class DialogFlowEsClient extends ConvoClient {
                 none: '0'
             },
             navigate: (dialogContext) => { // Navigate the sequence forward.
-                if (dialogContext.params.responseAlreadySet === '1') {
-                    return;
-                }
-
                 dialogContext.setFulfillmentText();
                 console.log('action: '+dialogContext.currentAction+', lastFulfillmentText: '+dialogContext.params.lastFulfillmentText);
                 dialogContext.respondWithText();
@@ -249,6 +245,14 @@ class DialogFlowEsClient extends ConvoClient {
 
         // Update the sequence and break if terminating statement or question.
         let sequenceUpdated = this._sequenceManager.get(dialogContext.sessionParams.parameters.sequenceCurrent); // Get sequence after intent handler has run in case it updated.
+        
+        // Handle response already set.
+        if (dialogContext.params.responseAlreadySet === '1') {
+            dialogContext.setParam(dialogContext.sessionParams, 'responseAlreadySet', '0');
+            return;
+        }
+        
+        // Handle response wait for reply set.
         if (intent.waitForReply === true) {
             console.log(fmtLog('handleIntentAndNavigate', 'breakIntents - Calling respondWithText()', dialogContext));
             dialogContext.setParam(dialogContext.sessionParams, 'lastAction', intentAction); // Update lastAction for break intents.
