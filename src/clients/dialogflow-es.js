@@ -238,7 +238,6 @@ class DialogFlowEsClient extends ConvoClient {
         // if (sequenceUpdated.breakIntents.has(intentAction) || sequenceCommon.breakIntents.has(intentAction)) {
         if (intent.waitForReply === true) {
             console.log(fmtLog('handleIntentAndNavigate', 'breakIntents - Calling respondWithText()', dialogContext));
-
             dialogContext.setParam(dialogContext.sessionParams, 'lastAction', intentAction); // Update lastAction for break intents.
             dialogContext.respondWithText(dialogContext.sessionParams.parameters.lastFulfillmentText);
             return;
