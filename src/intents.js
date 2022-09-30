@@ -51,6 +51,14 @@ class Intent {
         this._sequenceName = params.sequenceName;
 
         /**
+         * The flag indicating this intent should break to wait for reply.
+         * 
+         * @private
+         * @type {Function}
+         */
+        this._waitForReply = (params.waitForReply != undefined) ? params.waitForReply : false;
+
+        /**
          * The intent function handler.
          * 
          * @private
@@ -84,6 +92,19 @@ class Intent {
      * @param {string} value The value.
      */
     set sequenceName(value) {this._sequenceName = value; }
+
+    /**
+     * Gets the waitForReply.
+     * 
+     * @return The waitForReply.
+     */
+    get waitForReply() { return this._waitForReply; }
+    /**
+     * Sets the waitForReply.
+     * 
+     * @param {boolean} value The value.
+     */
+    set waitForReply(value) {this._waitForReply = value; }
 }
 
 /**
@@ -163,6 +184,5 @@ class IntentManager {
         return;
     }
 }
-  
 
 module.exports = {Intent,IntentManager};
