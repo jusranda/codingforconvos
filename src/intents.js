@@ -180,6 +180,7 @@ class IntentManager {
         params.actions.map((action) => this.registerIntent({
             action: action,
             sequenceName: params.sequenceName,
+            waitForReply: params.waitForReply,
             handler: params.handler
         }));
         return;
