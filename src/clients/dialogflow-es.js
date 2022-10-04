@@ -253,6 +253,9 @@ class DialogFlowEsClient extends ConvoClient {
         // Handle response already set.
         if (dialogContext.sessionParams.parameters.responseAlreadySet === '1') {
             //console.log(fmtLog('handleIntentAndNavigate', 'responseAlreadySet === \'1\'', dialogContext));
+            if (intent.waitForReply === true) {
+                dialogContext.setParam(dialogContext.sessionParams, 'lastAction', intentAction); // Update lastAction for break intents.
+            }
             return;
         }
         //console.log(fmtLog('handleIntentAndNavigate', 'responseAlreadySet === \'0\'', dialogContext));
