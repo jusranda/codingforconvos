@@ -454,12 +454,6 @@ class DialogFlowEsClient extends ConvoClient {
      * @returns the cleaned up webhook fulfillment request.
      */
     async handleRequest(request, response) {
-        // TODO: Parse the session ID via regex so that the log messages below can be associate with the session ID.
-
-        // HTTP debug dump.
-        console.log(fmtLog('handleRequest', 'Dialogflow Request headers: ' + JSON.stringify(request.headers)));
-        console.log(fmtLog('handleRequest', 'Dialogflow Request body: ' + JSON.stringify(request.body)));
-
         // Clean-up the HTTP request for dialogflow-fulfillment + WxCC interoperability.
         request = cleanUpRequest(request);
     
