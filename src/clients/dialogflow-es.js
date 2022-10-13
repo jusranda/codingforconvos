@@ -92,7 +92,6 @@ class DialogFlowEsClient extends ConvoClient {
         // Validate the input parameters.
         if (params == undefined) { throw new Error('parameters object for creating DialogFlowEsClient objects is missing.'); }
         if (params.baseParams == undefined) { throw new Error('baseParams is a required parameter for creating DialogFlowEsClient objects.'); }
-        if (params.populateFromEsPayload == undefined) { throw new Error('populateFromEsPayload is a required parameter for creating DialogFlowEsClient objects.'); }
         
         /**
          * The sequence manager.
@@ -141,7 +140,7 @@ class DialogFlowEsClient extends ConvoClient {
          */
         this._connectorManager = (params.connectorManager != undefined) ? params.connectorManager : new ConnectorManager({
             defaultParameterManager: new DefaultParameterManager()
-        });;
+        });
 
         /**
          * The function to populate the session props context using the Dialogflow ES payload.
@@ -149,7 +148,7 @@ class DialogFlowEsClient extends ConvoClient {
          * @private
          * @type {Function}
          */
-        this._populateFromEsPayload = params.populateFromEsPayload;
+        this._populateFromEsPayload = (params.populateFromEsPayload != undefined) ? params.populateFromEsPayload : (sessioncontext, dialogContext) => { return sessioncontext; };
 
         /**
          * The function to populate the session props context using the lookup function.
@@ -157,7 +156,7 @@ class DialogFlowEsClient extends ConvoClient {
          * @private
          * @type {Function}
          */
-        this._populateFromLookup = (params.populateFromLookup != undefined) ? params.populateFromLookup : async (ctxSessionProps, dialogContext) => { return ctxSessionProps; };
+        this._populateFromLookup = (params.populateFromLookup != undefined) ? params.populateFromLookup : async (sessioncontext, dialogContext) => { return sessioncontext; };
 
         /**
          * The function to initialize the sesion props base parameters.
@@ -165,7 +164,7 @@ class DialogFlowEsClient extends ConvoClient {
          * @private
          * @type {Object}
          */
-        this._baseParams = params.baseParams;
+        this._baseParams = (params.baseParams != undefined) ? params.baseParams : {};
         
         this.executeHandler = this.executeHandler.bind(this);
         this.intentHandler = this.intentHandler.bind(this);
