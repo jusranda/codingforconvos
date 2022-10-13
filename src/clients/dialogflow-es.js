@@ -93,7 +93,6 @@ class DialogFlowEsClient extends ConvoClient {
         if (params == undefined) { throw new Error('parameters object for creating DialogFlowEsClient objects is missing.'); }
         if (params.baseParams == undefined) { throw new Error('baseParams is a required parameter for creating DialogFlowEsClient objects.'); }
         if (params.populateFromEsPayload == undefined) { throw new Error('populateFromEsPayload is a required parameter for creating DialogFlowEsClient objects.'); }
-        if (params.populateFromLookup == undefined) { throw new Error('populateFromLookup is a required parameter for creating DialogFlowEsClient objects.'); }
         
         /**
          * The sequence manager.
@@ -158,7 +157,7 @@ class DialogFlowEsClient extends ConvoClient {
          * @private
          * @type {Function}
          */
-        this._populateFromLookup = params.populateFromLookup;
+        this._populateFromLookup = (params.populateFromLookup != undefined) ? params.populateFromLookup : async (ctxSessionProps, dialogContext) => { return ctxSessionProps; };
 
         /**
          * The function to initialize the sesion props base parameters.
