@@ -39,4 +39,4 @@ Click **Deploy**.
 
 # Documentation
 
-The latest javascript documentation can be found [here](https://github.com/jusranda/codingforconvos/blob/main/docs/codingforconvos/latest/index.html).
+The latest javascript documentation can be found [here](https://htmlpreview.github.io/?https://github.com/jusranda/codingforconvos/blob/main/docs/codingforconvos/latest/index.html).
