@@ -10,7 +10,7 @@ sequenceDiagram
     User->>FacebookMessenger: Says: <br/>Hi there!
     FacebookMessenger->>DialogflowES: Detect Intent: <br/>Hi there!
     DialogflowES->>WebhookFulfillment: Fulfillment: <br/>Hi there!
-    Note right of WebhookFulfillment: Update conversation state and<br/>move to the next turn!
+    Note right of WebhookFulfillment: Update conversation state and<br/>navigate to the next turn!
     WebhookFulfillment-->>DialogflowES: Rsp: <br/>Hello, I'm Justin!
     DialogflowES-->>FacebookMessenger: Rsp: <br/>Hello, I'm Justin!
     FacebookMessenger-->>User: Rsp: <br/>Hello, I'm Justin!
