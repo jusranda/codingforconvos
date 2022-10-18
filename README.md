@@ -4,7 +4,7 @@ I created this NPM library to simplify the journey to success with pro-code conv
 ```mermaid
 sequenceDiagram
     participant User
-    participant FacebookMessenger(Facebook Messenger)
+    participant FacebookMessenger
     participant DialogflowES
     participant WebhookFulfillment
     User->>FacebookMessenger: Says: Hi there!
