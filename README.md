@@ -1,2 +1,17 @@
 # codingforconvos
-NPM package for simplifying coding for conversations. The initial goal of this project is to make life easier for Cisco customers leveraging Google Dialogflow ES to create natural language bots.
+I created this NPM library to simplify the journey to success with pro-code conversation management.  Dialogflow ES requires a pro-code solution to managing conversation runtime state effectively.  The initial goal of this project is to make life easier for creating pro-code conversations in Google Dialogflow ES for use with [Dialogflow phone gateway](https://cloud.google.com/dialogflow/es/docs/integrations/phone-gateway) and [Cisco Webex Contact Center](https://www.cisco.com/c/en_ca/products/contact-center/webex-contact-center/index.html).
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant FacebookMessenger
+    participant DialogflowES
+    participant WebhookFulfillment
+    User->>FacebookMessenger: Says: Hi there!
+    FacebookMessenger->>DialogflowES: Detect Intent: Hi there!
+    DialogflowES->>WebhookFulfillment: Fulfillment: Hi there!
+    Note right of WebhookFulfillment: Handle API <br/>request!
+    WebhookFulfillment-->>DialogflowES: Hello, I'm Justin!
+    DialogflowES-->>FacebookMessenger: Hello, I'm Justin!
+    FacebookMessenger-->>User: Hello, I'm Justin!
+```
