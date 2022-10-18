@@ -113,7 +113,7 @@ class Sequence {
      * 
      * @return The activity.
      */
-    get ativity() { return this._activity; }
+    get activity() { return this._activity; }
     /**
      * Sets the activity.
      * 
