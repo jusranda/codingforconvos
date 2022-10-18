@@ -37,3 +37,6 @@ Add the below dependency to the *package.json* editor window.
 
 Click **Deploy**.
 
+# Documentation
+
+The latest javascript documentation can be found [here](https://github.com/jusranda/codingforconvos/blob/main/docs/codingforconvos/latest/index.html).
