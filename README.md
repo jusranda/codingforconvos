@@ -8,7 +8,7 @@ sequenceDiagram
     participant DialogflowES
     participant WebhookFulfillment
     User->>FacebookMessenger: Says: Hi there!
-    FacebookMessenger->>DialogflowES: Detect Intent: Hi there!
+    FacebookMessenger->>DialogflowES: Detect Intent: <br/>Hi there!
     DialogflowES->>WebhookFulfillment: Fulfillment: Hi there!
     Note right of WebhookFulfillment: Update conversation state and<br/>move to the next turn!
     WebhookFulfillment-->>DialogflowES: Hello, I'm Justin!
