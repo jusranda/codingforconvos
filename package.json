@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "doc": "jsdoc -R README.md -p package.json -r ./src -d docs"
+    "doc": "jsdoc -R docs/assets/README.md -p package.json -r ./src -d docs"
   },
   "repository": {
     "type": "git",
