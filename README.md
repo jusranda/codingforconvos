@@ -7,11 +7,33 @@ sequenceDiagram
     participant FacebookMessenger
     participant DialogflowES
     participant WebhookFulfillment
-    User->>FacebookMessenger: Says: Hi there!
+    User->>FacebookMessenger: Says: <br/>Hi there!
     FacebookMessenger->>DialogflowES: Detect Intent: <br/>Hi there!
-    DialogflowES->>WebhookFulfillment: Fulfillment: Hi there!
+    DialogflowES->>WebhookFulfillment: Fulfillment: <br/>Hi there!
     Note right of WebhookFulfillment: Update conversation state and<br/>move to the next turn!
-    WebhookFulfillment-->>DialogflowES: Hello, I'm Justin!
-    DialogflowES-->>FacebookMessenger: Hello, I'm Justin!
-    FacebookMessenger-->>User: Hello, I'm Justin!
+    WebhookFulfillment-->>DialogflowES: Rsp: <br/>Hello, I'm Justin!
+    DialogflowES-->>FacebookMessenger: Rsp: <br/>Hello, I'm Justin!
+    FacebookMessenger-->>User: Rsp: <br/>Hello, I'm Justin!
 ```
+
+# Getting Started
+
+Within the [Dialogflow ES Console](https://dialogflow.cloud.google.com), navigate to **Fulfillment**, enable the **In-line Editor**.
+
+![dialogflow-es-nav-fulfillment](https://github.com/jusranda/codingforconvos/blob/main/docs/assets/dialogflow-es-nav-fulfillment.png)
+![dialogflow-es-fulfillment-inline-editor](https://github.com/jusranda/codingforconvos/blob/main/docs/assets/dialogflow-es-fulfillment-inline-editor.png)
+
+Paste the contents of [this template file](https://github.com/jusranda/codingforconvos/blob/main/docs/assets/inline-fulfillment.js) into the *index.js* editor window.
+
+Add the below dependency to the *package.json* editor window.
+
+```
+  "dependencies": {
+    ...
+    "codingforconvos": "^0.0.126",
+    ...
+  }
+```
+
+Click **Deploy**.
+
