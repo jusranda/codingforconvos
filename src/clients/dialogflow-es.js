@@ -350,6 +350,7 @@ class DialogFlowEsClient extends ConvoClient {
 
             // Fetch the current sequence.
             let sequenceCurrent = this._sequenceManager.get(ctxSessionProps.parameters.sequenceCurrent);
+            sequenceCurrent = sequenceCurrent || this._sequenceManager.get('unassociated');
 
             console.debug(sessionId+'|intentHandler: Fetched sequenceCurrent \''+sequenceCurrent.name+'\'');
 
