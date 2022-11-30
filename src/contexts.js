@@ -15,7 +15,6 @@
 
 const { Sequence, SequenceManager } = require("./sequences");
 const { ConnectorManager } = require("./connectors");
-const { DialogFlowEsClient } = require("./clients/dialogflow-es");
 const { fmtLog } = require("./common");
 const { WebhookClient } = require("dialogflow-fulfillment");
 
@@ -67,7 +66,6 @@ class DialogContext {
          * The Dialogflow ES client.
          * 
          * @private
-         * @type {DialogFlowEsClient}
          */
         this._dialogflowClient = params.dialogflowClient;
 
