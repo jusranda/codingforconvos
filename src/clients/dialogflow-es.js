@@ -340,7 +340,7 @@ class DialogFlowEsClient extends ConvoClient {
         this._baseParams.fallbackCounter = '0';
         this._baseParams.noInputCounter = '0';
         this._baseParams.sequenceCurrent = 'welcome';
-        this._baseParams.sequenceStack = '';
+        this._baseParams.sequenceStack = 'welcome';
         this._baseParams.lastEvent = '';
         this._baseParams.lastAction = '';
         this._baseParams.lastFulfillmentText = '';
