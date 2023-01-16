@@ -74,6 +74,32 @@ function cleanUpRequest(request) {
 }
 
 /**
+ * Initialize the sequence manager.
+ * 
+ * @param {SequenceManager} sequenceManager   The sequence manager.
+ * @return {SequenceManager} The initialized sequence manager.
+ */
+function initializeSequenceManager (sequenceManager) {
+    const newSequenceManager = (sequenceManager != undefined) ? sequenceManager : new SequenceManager();
+    newSequenceManager.registerSequence(new Sequence({
+        name: 'unassociated', // Sequence name, also used for Dialogflow context name.
+        activity: 'what we were doing', // Activity description, used in course correction.
+        identityRequired: false,
+        authRequired: false,
+        params: {
+            none: '0'
+        },
+        navigate: (dialogContext) => { // Navigate the sequence forward.
+            dialogContext.setFulfillmentText();
+            console.log('action: '+dialogContext.currentAction+', lastFulfillmentText: '+dialogContext.params.lastFulfillmentText);
+            dialogContext.respondWithText();
+            return;
+        }
+    }));
+    return newSequenceManager;
+}
+
+/**
  * This class handles all of the state objects representing the conversation.
  * All navifation across sequences and steps happens within.
  */
@@ -99,22 +125,7 @@ class DialogFlowEsClient extends ConvoClient {
          * @private
          * @type {SequenceManager}
          */
-        this._sequenceManager = (params.sequenceManager != undefined) ? params.sequenceManager : new SequenceManager();
-        this._sequenceManager.registerSequence(new Sequence({
-            name: 'unassociated', // Sequence name, also used for Dialogflow context name.
-            activity: 'what we were doing', // Activity description, used in course correction.
-            identityRequired: false,
-            authRequired: false,
-            params: {
-                none: '0'
-            },
-            navigate: (dialogContext) => { // Navigate the sequence forward.
-                dialogContext.setFulfillmentText();
-                console.log('action: '+dialogContext.currentAction+', lastFulfillmentText: '+dialogContext.params.lastFulfillmentText);
-                dialogContext.respondWithText();
-                return;
-            }
-        }));
+        this._sequenceManager = initializeSequenceManager(params.sequenceManager);
 
         /**
          * The intent manager.
