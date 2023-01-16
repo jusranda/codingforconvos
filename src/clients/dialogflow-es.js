@@ -333,6 +333,22 @@ class DialogFlowEsClient extends ConvoClient {
      */
     createEsSessionProps(sessionId) {
         this._baseParams.sessionId = sessionId;
+        this._baseParams.sessionInitialized = '0';
+        
+        this._baseParams.helpCounter = '0';
+        this._baseParams.responseAlreadySet = '0';
+        this._baseParams.fallbackCounter = '0';
+        this._baseParams.noInputCounter = '0';
+        this._baseParams.sequenceCurrent = 'welcome';
+        this._baseParams.sequenceStack = '';
+        this._baseParams.lastEvent = '';
+        this._baseParams.lastAction = '';
+        this._baseParams.lastFulfillmentText = '';
+        this._baseParams.fulfillmentBuffer = '';
+        this._baseParams.triggeredSkill = '0';
+        this._baseParams.sayGoodbye = '0';
+        this._baseParams.saidGoodbye = '0';
+
         let context = {name: SESSION_PROPS, lifespan: 99, parameters: this._baseParams };
         return context;
     }
