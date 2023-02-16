@@ -18,24 +18,11 @@ sequenceDiagram
 
 # Getting Started
 
-Within the [Dialogflow ES Console](https://dialogflow.cloud.google.com), navigate to **Fulfillment**, enable the **In-line Editor**.
+Until I have time to adequately document this project, the best way to understand how to use this library is to review projects that implement it:
 
-![dialogflow-es-nav-fulfillment](https://github.com/jusranda/codingforconvos/blob/main/docs/assets/dialogflow-es-nav-fulfillment.png)
-![dialogflow-es-fulfillment-inline-editor](https://github.com/jusranda/codingforconvos/blob/main/docs/assets/dialogflow-es-fulfillment-inline-editor.png)
-
-Paste the contents of [this template file](https://github.com/jusranda/codingforconvos/blob/main/docs/assets/inline-fulfillment.js) into the *index.js* editor window.
-
-Add the below dependency to the *package.json* editor window.
-
-```
-  "dependencies": {
-    ...
-    "codingforconvos": "^0.0.126",
-    ...
-  }
-```
-
-Click **Deploy**.
+ - https://github.com/jusranda/codingforconvos-helloworld-dfes (a basic "Hello world" example).
+ - https://github.com/jusranda/cctsa-wxccdemobot-fulfillment (a more advanced implementation with various skills, multi-factor-authentication, and more.  this bot is what I used in my Cisco demonstrations on Webex Contact Center).
+ - https://github.com/jusranda/cctsa-wxccdemobot-commons (modular skills used by the cctas-wxccdemobot-fulfillment microservice).
 
 # Documentation
 
