@@ -28,5 +28,5 @@ Until I have time to adequately document this project, the best way to understan
 
 The latest javascript documentation can be found [here](https://htmlpreview.github.io/?https://github.com/jusranda/codingforconvos/blob/main/docs/codingforconvos/latest/index.html).
 
-NOTE: Unfortunately, I no longer work for Cisco Systems. and this repository with no longer be maintained - Justin Randall
+NOTE: Unfortunately, I no longer work for Cisco Systems. and this repository will no longer be maintained - Justin Randall
 
